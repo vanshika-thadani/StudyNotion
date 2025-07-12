@@ -9,10 +9,11 @@ const tagsSchema=new mongoose.Schema(
         description:{
             type:String,
         },
-        course:{
+        course:[{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Course",
-        }
+        }]
+        //ek tag multiple courses ke liye ho skta h so make it array
     }
 );
 module.exports=mongoose.model("Tag",tagsSchema);
