@@ -1,4 +1,5 @@
 const User=require('../models/User');
+const Profile=require('../models/Profile');
 const OTP=require('../models/OTP');
 const otpGenerator=require('otp-generator');
 const bcrypt=require('bcrypt');
@@ -134,10 +135,10 @@ exports.signUp=async(req,res)=>{
         )
     }
     //hash passowrd--bcrypt library
-    const hashedPassword=await bcrypt.has(password,10);
+    const hashedPassword=await bcrypt.hash(password,10);
 
     //create entry in db
-    const profileDetails=await Profiler.create(
+    const profileDetails=await Profile.create(
         {
             gender:null,
             dateOfBirth:null,

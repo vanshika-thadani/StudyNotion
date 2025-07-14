@@ -1,5 +1,5 @@
 const Course=require('../models/Course');
-const Tag=require('../models/tags');
+const Category=require('../models/category');
 const User=require('../models/User');
 const {uploadImageToCloudinary}=require('../utils/imageUploader')
 
@@ -7,11 +7,11 @@ const {uploadImageToCloudinary}=require('../utils/imageUploader')
 exports.createCourse=async(req,res)=>{
     try{
         //fetch data
-        const{courseName,courseDescription,whatYouWillLearn,price,tag}=req.body;
+        const{courseName,courseDescription,whatYouWillLearn,price,category}=req.body;
         //fetch thumbnail
         const thumbnail=req.files.thumbnailImage;
         //validation
-        if(!courseName || !courseDescription || !whatYouWillLearn || !price || !tag || !thumbnail)
+        if(!courseName || !courseDescription || !whatYouWillLearn || !price || !category || !thumbnail)
         {
             return res.status(400).json({
                 success:false,
@@ -32,15 +32,15 @@ exports.createCourse=async(req,res)=>{
             )
         }
 
-        //tag came with course is valid or not(extra)--since choosing tag from drop down no case of invalid tag
-        //in Course model tag is stored as an obj id so received from req.body is an objectID
-        const tagDetails=await Tag.findById(tag);
-        if(!tagDetails)
+        //category came with course is valid or not(extra)--since choosing category from drop down no case of invalid category
+        //in Course model category is stored as an obj id so received from req.body is an objectID
+        const categoryDetails=await Category.findById(category);
+        if(!categoryDetails)
         {
             return res.status(400).json(
                 {
                     success:false,
-                    message:"Tag Details not found",
+                    message:"Category Details not found",
                 }
             )
         }
@@ -54,7 +54,7 @@ exports.createCourse=async(req,res)=>{
             instructor:instructorDetails._id,//since in Course model instructor is obj ID so to here store , fetched id and in db stored
             whatYouWillLearn:whatYouWillLearn,
             price,
-            tag,//tag ki object id hi req me mili hai 
+            category,//category ki object id hi req me mili hai 
             thumbnail:thumbnailImage.secure_url,
         })
 
@@ -68,18 +68,19 @@ exports.createCourse=async(req,res)=>{
         }
         );
 
-        //add course entry in tag
-        await Tag.findByIdAndUpdate({_id:tag},{
+        //add course entry in category
+        await Category.findByIdAndUpdate({_id:category},{
             $push:{
                 course:newCourse._id,
             }
         }
         );
 
+
         //return response
         return res.status(200).json(
                 {
-                    success:false,
+                    success:true,
                     message:"Course craeted successfully",
                     data:newCourse,
                 }
@@ -122,6 +123,6 @@ exports.showAllCourses=async(req,res)=>{
                     message:"Cannot fetch courses",
                     error:err.message,
                 }
-            )
+            );
     }
 }

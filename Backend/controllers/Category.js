@@ -1,7 +1,7 @@
-const Tag=require('../models/tags');
+const Category=require('../models/category');
 
-//create tag handler function
-exports.createTag=async(req,res)=>{
+//create category handler function
+exports.createCategory=async(req,res)=>{
     try{
         //fetch data
         const {name,description}=req.body;
@@ -16,13 +16,13 @@ exports.createTag=async(req,res)=>{
             )   
         }
         //create entry in db
-        const tagDetails=await Tag.create({name:name,description:description});
-        console.log(tagDetails);
+        const categoryDetails=await Category.create({name:name,description:description});
+        console.log(categoryDetails);
 
         return res.status(200).json(
             {
                 success:true,
-                message:"Tag created successfully",
+                message:"Category created successfully",
             }
         )
     }
@@ -37,15 +37,15 @@ exports.createTag=async(req,res)=>{
     }
 }
 
-//handler for getAll tags
-exports.showAlltags=async(req,res)=>{
+//handler for getAll categories
+exports.showAllCategories=async(req,res)=>{
     try{
-        const allTags=await Tag.find({},{name:true,description:true});//no criteria to fetch just bring all tags necessary having title and description include
+        const allCategory=await Category.find({},{name:true,description:true});//no criteria to fetch just bring all tags necessary having title and description include
         res.status(200).json(
             {
                 success:true,
-                message:"All tags returned successfully",
-                allTags,
+                message:"All Categories returned successfully",
+                allCategory,
             }
         )
     }
