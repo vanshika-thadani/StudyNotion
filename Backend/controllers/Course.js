@@ -203,18 +203,18 @@ exports.editCourse = async (req, res) => {
 
 
   //get full course details
-  exports.getFullCourseDetails = async (req, res) => {
+  exports.getCourseDetails = async (req, res) => {
 	try {
+		//get course id
 	  const { courseId } = req.body
 	  const userId = req.user.id
-	  const courseDetails = await Course.findOne({
-		_id: courseId,
-	  })
+	  //find course details
+	  const courseDetails = await Course.findOne({_id: courseId,})
 		.populate({
 		  path: "instructor",
 		  populate: {
 			path: "additionalDetails",
-		  },
+		  },//course me instructor ek ref hai or instructor mtlb user me additionalDetails bhi ref hai toh sab populate honge
 		})
 		.populate("category")
 		.populate("ratingAndReviews")
@@ -260,6 +260,7 @@ exports.editCourse = async (req, res) => {
   
 	  return res.status(200).json({
 		success: true,
+		message:"Course details fetched successfully",
 		data: {
 		  courseDetails,
 		  totalDuration,

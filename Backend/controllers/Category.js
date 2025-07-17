@@ -62,7 +62,7 @@ exports.showAllCategories=async(req,res)=>{
 
 
 
-
+//handler for cateGoryPage
 exports.categoryPageDetails = async (req, res) => {
 	try {
 		const { categoryId } = req.body;
